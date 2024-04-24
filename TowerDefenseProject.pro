@@ -29,3 +29,6 @@ HEADERS += \
     player.h \
     shop.h \
     tower.h
+
+RESOURCES += \
+    images.qrc
