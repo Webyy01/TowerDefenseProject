@@ -8,6 +8,7 @@ CONFIG += c++17 cmdline
 
 SOURCES += \
         bullet.cpp \
+        coordinate.cpp \
         enemy.cpp \
         main.cpp \
         map.cpp \
@@ -22,6 +23,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     bullet.h \
+    coordinate.h \
     enemy.h \
     map.h \
     player.h \
