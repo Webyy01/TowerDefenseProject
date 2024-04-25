@@ -1,4 +1,4 @@
-QT = core
+QT += core widgets multimedia
 
 CONFIG += c++17 cmdline
 
@@ -8,12 +8,16 @@ CONFIG += c++17 cmdline
 
 SOURCES += \
         bullet.cpp \
+        cannontower.cpp \
         enemy.cpp \
+        infernotower.cpp \
         main.cpp \
         map.cpp \
         player.cpp \
         shop.cpp \
-        tower.cpp
+        teslatower.cpp \
+        tower.cpp \
+        xbowtower.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -21,9 +25,17 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    InfernoTower.h \
+    TeslaTower.h \
+    XbowTower.h \
     bullet.h \
+    cannontower.h \
     enemy.h \
     map.h \
     player.h \
     shop.h \
     tower.h
+
+RESOURCES += \
+    images.qrc \
+    sounds.qrc
