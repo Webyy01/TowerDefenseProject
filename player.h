@@ -1,6 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "QObject"
+#include <QtWidgets/QGraphicsScene>
 
 class Player : QObject
 {
@@ -14,7 +15,7 @@ public:
     void setHealth(int newHealth);
     void decreaseHealth();
     int getCoinBalance() const;
-    void placeTower();
+    void placeTower(QGraphicsScene*);
 
 public slots:
 

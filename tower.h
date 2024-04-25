@@ -1,8 +1,11 @@
 #ifndef TOWER_H
 #define TOWER_H
+#include<QObject>
+#include <QGraphicsPixmapItem>
 
-class Tower
+class Tower: public QObject, public QGraphicsPixmapItem
 {
+
 public:
     Tower();
 };
