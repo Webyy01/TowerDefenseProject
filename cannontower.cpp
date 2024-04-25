@@ -1,6 +1,6 @@
 #include "CannonTower.h"
 
-// Define the path to the cannon tower image
+// Cannon Tower: the most basic and the cheapest tower
 const QString CANNON_TOWER_IMAGE_PATH = ":/images/cannon_tower.png";
 
 CannonTower::CannonTower(QGraphicsItem* parent)
@@ -10,7 +10,7 @@ CannonTower::CannonTower(QGraphicsItem* parent)
             75, // Range
             1, // Firing rate
             parent) {
-    // Set the pixmap for the cannon tower's GUI representation
+    // sets the tower GUI image
     setPixmap(QPixmap(CANNON_TOWER_IMAGE_PATH));
 }
 
@@ -21,10 +21,10 @@ void CannonTower::shoot() {
 bool CannonTower::upgrade(int& playerCurrency) {
     if (UpgradeLevel < MaxUpgradeLevel && playerCurrency >= UpgradeCost) {
         increaseAttributes(2, 5, 1, 50); // Smaller increments for a basic tower
-        playerCurrency -= UpgradeCost;
+        playerCurrency -= UpgradeCost; // decrease the player coins balance after upgrading
         UpgradeCost += 50; // Increase upgrade cost for the next level
         UpgradeLevel++;
-        return true;
+        return true; //upgrade is done
     }
-    return false;
+    return false; // no enough balance
 }

@@ -4,7 +4,7 @@
 #include <QGraphicsPixmapItem>
 #include "Tower.h"
 
-// Cannon Tower: the most basic and fundamental tower
+// Cannon Tower: the most basic and the cheapest tower
 class CannonTower : public Tower {
 public:
     // Constructor with default properties
@@ -14,4 +14,4 @@ public:
 
 };
 
-#endif // CANNONTOWER_H
+#endif
