@@ -4,31 +4,21 @@
 #include <QGraphicsItem>
 #include <QApplication>
 #include "map.h"
+#include <gamecontroller.h>
+#include "tower.h"
+#include "cannontower.h"
 
 int main(int argc, char *argv[])
 {
-    /*
-     *    QCoreApplication a(argc, argv);
-
-    //create a new scene
-    MainClass::startScene();
-
-    QGraphicsView * view = new QGraphicsView(MainClass::scene);
-    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    view->show();
-    view->setFixedSize(800,800);
-
-    return a.exec();
-*/
 
     QApplication a(argc, argv);
 
     Map* myMap = new Map();
 
-    QGraphicsScene* myScene =myMap;
+    GameController gameController(myMap);
 
-    QGraphicsView* view = new QGraphicsView(myScene);
+    QGraphicsView* view = new QGraphicsView();
+    view->setScene(myMap);
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->show();

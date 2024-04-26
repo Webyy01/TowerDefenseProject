@@ -2,9 +2,8 @@
 #define MAP_H
 #include <QGraphicsScene>
 #include <QObject>
-#include "enemy.h"
 #include <vector>
-#include "tower.h"
+#include <QLabel>
 
 class Map : public QGraphicsScene
 {
@@ -13,22 +12,26 @@ private:
     int width = 1400;
     int height = 700;
     int level;
+    float enemySpeed = 2.5;
 
-    //Temp variable to store rect items
-    QGraphicsRectItem* temp;
+    void createPath(int level, float enemySpeed);
+    void createTiles();
 
-    std::vector<std::vector<QGraphicsItem*>> tiles;
-    std::vector<QGraphicsItem*> path;
-
-    void createPath(int level, int numRows, int numCols);
-    void removeEnemy(Enemy* enemy);
+    QLabel* lblHealth;
+    QLabel* lblLevel;
+    QLabel* lblScore;
 public:
     Map();
     void startScene();
-    void addEnemy(Enemy*);
-    void moveEnemy(Enemy*);
-    bool addTower(Tower* tower, QGraphicsItem* tile);
 
+    void setHealthLabelText(char* text);
+    void setLevelLabelText(char* text);
+    void setScoreLabelText(char* text);
+
+    void setEnemySpeed(float numPixelsPerMove);
+
+    std::vector<QPoint*> path;
+    std::vector<QGraphicsRectItem*> tiles;
 };
 
 #endif // MAP_H

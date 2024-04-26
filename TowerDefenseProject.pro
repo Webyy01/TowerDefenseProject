@@ -11,13 +11,14 @@ SOURCES += \
         bullet.cpp \
         cannontower.cpp \
         enemy.cpp \
+        gamecontroller.cpp \
         infernotower.cpp \
         main.cpp \
         map.cpp \
-        player.cpp \
         shop.cpp \
         teslatower.cpp \
         tower.cpp \
+        utility.cpp \
         xbowtower.cpp
 
 # Default rules for deployment.
@@ -32,15 +33,11 @@ HEADERS += \
     bullet.h \
     cannontower.h \
     enemy.h \
+    gamecontroller.h \
     map.h \
-    player.h \
     shop.h \
-    tower.h
+    tower.h \
+    utility.h
 
 RESOURCES += \
-<<<<<<< HEAD
-    images.qrc \
-    sounds.qrc
-=======
-    images.qrc
->>>>>>> 0b9fd878905c278d6fc362e14a2f77b890f1bcd2
+    Images.qrc

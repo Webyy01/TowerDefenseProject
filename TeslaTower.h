@@ -1,15 +1,19 @@
 #ifndef TESLATOWER_H
 #define TESLATOWER_H
 
-#include "Tower.h"
+#include "tower.h"
+#include <vector>
+#include <QString>
 
 class TeslaTower : public Tower {
 public:
-    TeslaTower(QGraphicsItem* parent = nullptr);
+    TeslaTower(Map* map);
     void shoot() override;
     bool upgrade(int& playerCurrency) override;
+    void setLevelImage() override;
 
-    // Other members and methods...
+private:
+    static const std::vector<QString> levelImages;
 };
 
 #endif // TESLATOWER_H

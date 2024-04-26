@@ -1,17 +1,21 @@
 #ifndef INFERNOTOWER_H
 #define INFERNOTOWER_H
 
-#include "Tower.h"
+#include "tower.h"
+#include <vector>
+#include <QString>
 
-// InfernoTower: most powerful and expensive tower
 class InfernoTower : public Tower {
 public:
-
-
-    InfernoTower(QGraphicsItem* parent = nullptr);
+    InfernoTower(Map* map);
     void shoot() override;
-    bool upgrade(int& playerCurrency) override;
-};
+    bool upgrade(int& playerCurrency);
+    void setLevelImage() override;
 
+private:
+    static const std::vector<QString> levelImages;
+    int SplashRange;
+    int SplashDamage;
+};
 
 #endif // INFERNOTOWER_H

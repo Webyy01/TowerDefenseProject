@@ -1,13 +1,19 @@
 #ifndef XBOWTOWER_H
 #define XBOWTOWER_H
 
-#include "Tower.h"
+#include "tower.h"
+#include <vector>
+#include <QString>
 
-// Xbow Tower: less expensive with moderate power
 class XbowTower : public Tower {
 public:
-    XbowTower(QGraphicsItem* parent = nullptr);
+    XbowTower(Map* map);
     void shoot() override;
-    bool upgrade(int& playerCurrency) override;};
+    bool upgrade(int& playerCurrency) override;
+    void setLevelImage() override;
+
+private:
+    static const std::vector<QString> levelImages;
+};
 
 #endif // XBOWTOWER_H

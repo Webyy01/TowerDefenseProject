@@ -1,9 +1,9 @@
 #include "map.h"
 #include <QtWidgets/QGraphicsScene>
-#include "enemy.h"
-#include <QPen>
-#include "tower.h"
+#include <QMouseEvent>
+#include <QGraphicsRectItem>
 
+//Initialize the map
 Map::Map() {
     QGraphicsScene();
     startScene();
@@ -12,139 +12,132 @@ Map::Map() {
 //Function that starts the scene with all its attribtues
 void Map::startScene(){
 
-
-    //Resizes the main vector (row vector) to size 10
-    tiles.resize(20);
-
-    int indexX = 0;
-    int indexY = 0;
-
-    //Initialize all the tiles
-    for(size_t i = 0; i < tiles.capacity(); i++){
-
-        //Resizes the column vector to 10
-        tiles[i].resize(20);
-        for(size_t j = 0; j < tiles[i].capacity(); j++){
-            tiles[i][j] = new QGraphicsRectItem(indexX, indexY, 70, 35);
-            tiles[i][j]->setVisible(false);
-            this->addItem(tiles[i][j]);
-            indexY+=35;
-        }
-        indexY = 0;
-        indexX+=70;
-    }
+    //Set a constant scene rectangle to avoid having the scene moving
+    this->setSceneRect(0,0,width,height);
 
     //Initialize the path
-    createPath(1, 20, 20);
+    createPath(1, 2.5);
 
     //Create a background Image
-    QPixmap backgroundImage(":/towerdefimgs/pexels-pixabay-235985.jpg");
+    QPixmap backgroundImage(":/Images/map.png");
     backgroundImage.scaled(this->width, this->height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     this->setBackgroundBrush(backgroundImage);
 
+    lblHealth = new QLabel();
+    lblScore = new QLabel();
+    lblLevel = new QLabel();
+
+    createTiles();
    }
 
+void Map::createTiles(){
+
+    QGraphicsRectItem* rectItem; //rect item to initialize the tiles
+
+    QBrush myBrush(Qt::transparent); //Set all tiles to be transparent
+    QBrush pathBrush(QPixmap(":/Images/Sand_Image_PNG.png").scaled(60,100)); //Set only the path tiles to have a sand background
+
+    //Create 100x100 tiles
+    for(int i = 0; i < width; i+=100){
+        for(int j = 0; j < height; j+=100){
+
+            rectItem = new QGraphicsRectItem(0,0,100,100); //create a new tile
+
+            //fix its position
+            rectItem->setX(i);
+            rectItem->setY(j);
+
+            //set its brush to transparent and visible
+            rectItem->setBrush(myBrush);
+            rectItem->setVisible(true);
+
+            //Make it selectable to be able to add towers
+            rectItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
+
+            tiles.push_back(rectItem); //Add the tile to the tile list
+            this->addItem(rectItem); //Add the tile to the map
+
+            for(size_t k = 0; k< path.size(); k++){
+
+                //check if the tile is on the path, if yes...
+                if(((i - path[k]->x()) > -100 && (i - path[k]->x()) < 100) && ((j - path[k]->y()) > -100 && (j - path[k]->y()) <100)){
+                    //.. make it impossible to put a tower on it and make its background sandy
+                    rectItem->setFlag(QGraphicsItem::ItemIsSelectable, false);
+                    rectItem->setBrush(pathBrush);
+                    break;
+                }
+            }
+        }
+    }
+}
+
 //Creates a path of tiles on which the enemies will move
-void Map::createPath(int level, int numRows, int numCols){
+void Map::createPath(int level, float enemySpeed){
 
     //Create the path for level 1
     if(level == 1){
 
-        //Create a start tile in the middle of the last row
-        QGraphicsRectItem* startTile = dynamic_cast<QGraphicsRectItem*>(tiles[numRows/2][numCols-1]);
-        startTile->setBrush(QBrush(Qt::red));
-        startTile->setVisible(true);
-        path.push_back(startTile);
+        //The shift points, the enemy will keep moving until it reaches them, then shifts
+        float shift1Y = 500;
+        float shift1X = 700;
+        float shift2Y = 300;
+        float shift2X = 400;
+        float endpoint = 0;
 
-        //The shift points, the enemy will keep moving until it reaches them
-        int shift1Cols = 15;
-        int shift1Rows = 15;
-        int shift2Cols = 7;
-        int shift2Rows = 6;
-        int shift3Cols = 0;
+        float indexX = this->width/2;
+        float indexY = this->height;
 
-        int indexX = numRows/2;
-        int indexY = numCols-2;
-        QGraphicsRectItem* currentTile;
-        while(indexY > shift1Cols){
-            currentTile = dynamic_cast<QGraphicsRectItem*>(tiles[indexX][indexY]);
-            currentTile->setBrush(QBrush(Qt::red));
-            currentTile->setVisible(true);
-            path.push_back(currentTile);
-            indexY--;
+        QPoint* currentPoint;
+        while(indexY > shift1Y){
+            currentPoint = new QPoint();
+            currentPoint->setX(indexX);
+            currentPoint->setY(indexY);
+            path.push_back(currentPoint);
+            indexY-=enemySpeed;
         }
-        while(indexX < shift1Rows){
-            currentTile = dynamic_cast<QGraphicsRectItem*>(tiles[indexX][indexY]);
-            currentTile->setBrush(QBrush(Qt::red));
-            currentTile->setVisible(true);
-            path.push_back(currentTile);
-            indexX++;
+        while(indexX < shift1X){
+            currentPoint = new QPoint();
+            currentPoint->setX(indexX);
+            currentPoint->setY(indexY);
+            path.push_back(currentPoint);
+            indexX+=enemySpeed;
         }
-        while(indexY > shift2Cols){
-            currentTile = dynamic_cast<QGraphicsRectItem*>(tiles[indexX][indexY]);
-            currentTile->setBrush(QBrush(Qt::red));
-            currentTile->setVisible(true);
-            path.push_back(currentTile);
-            indexY--;
+        while(indexY > shift2Y){
+            currentPoint = new QPoint();
+            currentPoint->setX(indexX);
+            currentPoint->setY(indexY);
+            path.push_back(currentPoint);
+            indexY-=enemySpeed;
         }
-        while(indexX > shift2Rows){
-            currentTile = dynamic_cast<QGraphicsRectItem*>(tiles[indexX][indexY]);
-            currentTile->setBrush(QBrush(Qt::red));
-            currentTile->setVisible(true);
-            path.push_back(currentTile);
-            indexX--;
+        while(indexX > shift2X){
+            currentPoint = new QPoint();
+            currentPoint->setX(indexX);
+            currentPoint->setY(indexY);
+            path.push_back(currentPoint);
+            indexX-=enemySpeed;
         }
-        while(indexY >= shift3Cols){
-            currentTile = dynamic_cast<QGraphicsRectItem*>(tiles[indexX][indexY]);
-            currentTile->setBrush(QBrush(Qt::red));
-            currentTile->setVisible(true);
-            path.push_back(currentTile);
-            indexY--;
+        while(indexY >= endpoint){
+            currentPoint = new QPoint();
+            currentPoint->setX(indexX);
+            currentPoint->setY(indexY);
+            path.push_back(currentPoint);
+            indexY-=enemySpeed;
         }
 
     }
 }
 
-//Creates an enemy to existence
-void Map::addEnemy(Enemy* enemy){
-    temp = dynamic_cast<QGraphicsRectItem*>(path[0]);
-    path[0] = enemy;
+void Map::setHealthLabelText(char* text){
+    lblHealth->setText(text);
+}
+void Map::setLevelLabelText(char* text){
+    lblLevel->setText(text);
+}
+void Map::setScoreLabelText(char* text){
+    lblScore->setText(text);
 }
 
-//Moves the enemy one step along the path
-void Map::moveEnemy(Enemy* enemy){
-    for(size_t i = 0; i < path.size(); i++){
-        if(path[i] == enemy){
-            if(i == path.size()){
-                removeEnemy(enemy);
-                return;
-            }
-
-            path[i+1] = enemy;
-            path[0] = temp;
-        }
-    }
+void Map::setEnemySpeed(float numPixelsPerMove){
+    enemySpeed = numPixelsPerMove;
 }
 
-//Removes the enemy
-void Map::removeEnemy(Enemy* enemy){
-    for(size_t i = 0; i < path.size(); i++){
-        if(path[i] == enemy){
-            path[i] = temp;
-            delete enemy;
-            return;
-        }
-    }
-    delete enemy;
-}
-
-//Adds a tower in the appropriate place
-bool Map::addTower(Tower* tower, QGraphicsItem* tile){
-    for(size_t i = 0; i < path.size(); i++){
-        if(tile == path[i]){
-            return false;
-        }
-    }
-    tile = dynamic_cast<QGraphicsPixmapItem*>(tower);
-    return true;
-}

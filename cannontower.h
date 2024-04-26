@@ -1,17 +1,23 @@
 #ifndef CANNONTOWER_H
 #define CANNONTOWER_H
+
+#include "tower.h"
 #include <QObject>
 #include <QGraphicsPixmapItem>
-#include "Tower.h"
+#include <QString>
+#include <vector>
+#include "map.h"
 
-// Cannon Tower: the most basic and the cheapest tower
 class CannonTower : public Tower {
 public:
-    // Constructor with default properties
-    CannonTower(QGraphicsItem* parent = nullptr);
-    void shoot() override; // Implementation of the basic shoot functionality
+    CannonTower(Map* myMap);
+    CannonTower(Map* myMap, int posX, int posY);
+    void shoot() override;
     bool upgrade(int& playerCurrency) override;
+    void setLevelImage() override;
 
+private:
+    static const std::vector<QString> levelImages;
 };
 
-#endif
+#endif // CANNONTOWER_H
