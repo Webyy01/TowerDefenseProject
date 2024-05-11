@@ -5,8 +5,11 @@
 #include "QGraphicsScene"
 #include "QGraphicsProxyWidget"
 #include "Bullet.h"
+#include <iostream>
+using namespace std;
 
-Enemy::Enemy(Map* map) : QObject(), QGraphicsPixmapItem(), lose(new QMediaPlayer()), sound(new QMediaPlayer()), mainlosing(new QAudioOutput()){
+//Constructor of the enemy
+Enemy::Enemy(Map* map) : QObject(), QGraphicsPixmapItem(){
 
     health = 100;
     maxHealth = 100;
@@ -14,31 +17,15 @@ Enemy::Enemy(Map* map) : QObject(), QGraphicsPixmapItem(), lose(new QMediaPlayer
 
     setPixmap(QPixmap(":/Images/Enemy_Dropper_Ballon.png").scaled(60, 100));
 
-
-    QTimer *timer = new QTimer();
-    connect(timer, SIGNAL(timeout()), this, SLOT(move()));
-    timer->start(50);
-
-    // mainlosing->setVolume(10);
-    // lose->setAudioOutput(mainlosing);
-    // lose->setSource(QUrl(":/audios/balloonpop.mp3"));
-
-    // QProgressBar healthBar;
-    // healthBar.setMinimum(0);
-    // healthBar.setMaximum(100);
-    // healthBar.setValue(health);
-
-    // QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget(this);
-    // proxy->setWidget(&healthBar);
-    // proxy->setScale(0.2);
-    // proxy->setRotation(270);
-    // proxy->setPos(-5, 30);
-    // proxy->setParentItem(this);
+    motionTimer = new QTimer();
+    connect(motionTimer, SIGNAL(timeout()), this, SLOT(move()));
+    motionTimer->start(50);
 
     this->map = map;
 
     //Add the enemy to the map and set its position to the starting point in the path
     map->addItem(this);
+    // set the position to the first position on the path
     this->setX(map->path[0]->x());
     this->setY(map->path[0]->y());
 
@@ -46,12 +33,10 @@ Enemy::Enemy(Map* map) : QObject(), QGraphicsPixmapItem(), lose(new QMediaPlayer
 
 //Destructor of the enemy
 Enemy::~Enemy() {
-
     //Remove the enemy from the map
-    map->removeItem(this);
-    delete lose;
-    delete sound;
-    delete mainlosing;
+    if(this->scene() == map){
+        map->removeItem(this);
+    }
 }
 
 void Enemy::move() {
@@ -59,11 +44,12 @@ void Enemy::move() {
 
     //If the enemy has passed the whole path
     if(currentIndex+1 == map->path.size()){
+        motionTimer->stop(); // stop the timer
         //Emit the enemyDissapeared signal to be handled by the appropriate function (decrease player health)
         emit enemyDissapeared(this);
 
         //delete the enemy
-        delete this;
+        //delete this;
         return;
     }
 
@@ -76,8 +62,7 @@ void Enemy::move() {
     for (int i = 0; i < collideItems.size(); ++i) {
             Bullet *bullet = dynamic_cast<Bullet*>(collideItems[i]);
             if (bullet) {
-                sound->play();
-                scene()->removeItem(bullet);
+                bullet->getMap()->removeItem(bullet);
                 takeDamage(bullet->getDamage());
                 delete bullet;
                 return;
@@ -90,7 +75,6 @@ void Enemy::takeDamage(int damage) {
     health -= damage;
     if (health <= 0) {
         isAlive = false;
-        lose->play();
         emit enemyDestroyed(this);
     }
 }

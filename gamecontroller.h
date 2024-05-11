@@ -6,6 +6,8 @@
 #include <QList>
 #include <enemy.h>
 #include "map.h"
+#include "tower.h"
+#include "bullet.h"
 
 class GameController : public QObject
 {
@@ -26,7 +28,8 @@ private:
     int waveInterval;
     int waveDuration;
 
-    QList <Enemy *> enemies;
+    QList <Enemy*> enemies;
+    QList <Tower*> towers;
     Map* map;
 
     int playerHealth = 1000;
@@ -38,7 +41,7 @@ private slots:
     void handleEnemyDestroyed(Enemy* destroyedEnemy);
     void handleEnemyDissapeared(Enemy* enemy);
     void handlePlayerLost();
-
     void handleTileSelected();
+
 };
 #endif // GAMECONTROLLER_H

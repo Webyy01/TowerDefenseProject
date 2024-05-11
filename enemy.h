@@ -15,6 +15,9 @@ public:
     Enemy(Map*);
     ~Enemy();
     int getHealth() const;
+    bool isALive() const{
+        return isAlive;
+    }
 
 public slots:
     void move();
@@ -28,12 +31,8 @@ private:
     int health;
     int maxHealth;
     bool isAlive;
-    QMediaPlayer* lose;
-    QMediaPlayer* sound;
-    QAudioOutput* mainlosing;
-    QProgressBar healthBar;
-
     Map* map;
+    QTimer *motionTimer;
 
     int indexEnemyOnPath(Enemy*);
 };

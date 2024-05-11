@@ -18,7 +18,6 @@ SOURCES += \
         shop.cpp \
         teslatower.cpp \
         tower.cpp \
-        utility.cpp \
         xbowtower.cpp
 
 # Default rules for deployment.
@@ -36,8 +35,7 @@ HEADERS += \
     gamecontroller.h \
     map.h \
     shop.h \
-    tower.h \
-    utility.h
+    tower.h
 
 RESOURCES += \
     Images.qrc

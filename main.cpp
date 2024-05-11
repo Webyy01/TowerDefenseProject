@@ -5,8 +5,6 @@
 #include <QApplication>
 #include "map.h"
 #include <gamecontroller.h>
-#include "tower.h"
-#include "cannontower.h"
 
 int main(int argc, char *argv[])
 {
@@ -23,6 +21,7 @@ int main(int argc, char *argv[])
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->show();
     view->setFixedSize(1400, 700);
+    view->setAttribute(Qt::WA_AcceptTouchEvents, false);
 
     return a.exec();
 }

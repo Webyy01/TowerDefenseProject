@@ -16,6 +16,8 @@
         <file>map.png</file>
         <file>Enemy_Dropper_Ballon.png</file>
         <file>Sand_Image_PNG.png</file>
+        <file>Cannon_Shell_Image.png</file>
+        <file>Cannon_Shell_2_PNG.png</file>
     </qresource>
     <qresource prefix="/">
         <file>map.png</file>

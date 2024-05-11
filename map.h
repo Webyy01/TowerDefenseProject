@@ -12,9 +12,9 @@ private:
     int width = 1400;
     int height = 700;
     int level;
-    float enemySpeed = 2.5;
+    double enemySpeed = 2.5;
 
-    void createPath(int level, float enemySpeed);
+    void createPath(int level, double enemySpeed);
     void createTiles();
 
     QLabel* lblHealth;
@@ -28,7 +28,7 @@ public:
     void setLevelLabelText(char* text);
     void setScoreLabelText(char* text);
 
-    void setEnemySpeed(float numPixelsPerMove);
+    void setEnemySpeed(double numPixelsPerMove);
 
     std::vector<QPoint*> path;
     std::vector<QGraphicsRectItem*> tiles;

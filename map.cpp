@@ -72,20 +72,20 @@ void Map::createTiles(){
 }
 
 //Creates a path of tiles on which the enemies will move
-void Map::createPath(int level, float enemySpeed){
+void Map::createPath(int level, double enemySpeed){
 
     //Create the path for level 1
     if(level == 1){
 
         //The shift points, the enemy will keep moving until it reaches them, then shifts
-        float shift1Y = 500;
-        float shift1X = 700;
-        float shift2Y = 300;
-        float shift2X = 400;
-        float endpoint = 0;
+        double shift1Y = 500;
+        double shift1X = 700;
+        double shift2Y = 300;
+        double shift2X = 400;
+        double endpoint = -100; //adjusted to the height of the enemy (100 pixels)
 
-        float indexX = this->width/2;
-        float indexY = this->height;
+        double indexX = this->width/2;
+        double indexY = this->height;
 
         QPoint* currentPoint;
         while(indexY > shift1Y){
@@ -137,7 +137,7 @@ void Map::setScoreLabelText(char* text){
     lblScore->setText(text);
 }
 
-void Map::setEnemySpeed(float numPixelsPerMove){
+void Map::setEnemySpeed(double numPixelsPerMove){
     enemySpeed = numPixelsPerMove;
 }
 
